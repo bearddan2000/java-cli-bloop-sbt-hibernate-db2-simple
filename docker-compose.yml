@@ -1,0 +1,35 @@
+version: '3'
+services:
+  java-srv:
+    image: gradle
+    volumes:
+      - ./java-srv/bin:/home/gradle
+    depends_on:
+      - db
+    links:
+      - "db:db"
+    command: sh -c "sleep 90 && gradle run"
+
+  db:
+    image: ibmcom/db2
+    privileged: true
+    environment:
+      LICENSE: "accept"
+      DB2INSTANCE: "db2dude"
+      DB2INST1_PASSWORD: "db2pw"
+      DBNAME: "animal"
+      BLU: "false"
+      ENABLE_ORACLE_COMPATIBILITY: "false"
+      UPDATEVAIL: "NO"
+      TO_CREATE_SAMPLEDB: "false"
+      REPODB: "false"
+      IS_OSXFS: "true"
+      PERSISTENT_HOME: "true"
+      HADR_ENABLED: "false"
+      ETCD_ENDPOINT: ""
+      ETCD_USERNAME: ""
+      ETCD_PASSWORD: ""
+#    volumes:
+#      - ./db/sql:/database
+    ports:
+      - 50000
